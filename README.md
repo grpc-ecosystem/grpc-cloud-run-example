@@ -1,19 +1,19 @@
 # gRPC in Google Cloud Run
 
-Google Cloud Run makes it easy to deploy and run REST servers, but it also
-supports gRPC servers out of the box. This repo houses an example of how to
-deploy a gRPC service written in Python to Cloud Run.
-
 *Estimated Reading Time: 20 minutes*
 
-## The Architecture
+Google Cloud Run makes it easy to deploy and run REST servers, but it also
+supports gRPC servers out of the box. This article will show you how to
+deploy a gRPC service written in Python to Cloud Run. For the full code, [check
+out the Github repo.](https://github.com/gnossen/grpc-cloud-run-example)
+
+**TODO(rbellevi): Update link once repo is rehomed**
 
 We'll be writing a simple remote calculator service. For the moment, it will
 just support adding and subtracting floating point numbers, but once this is up
-and running, you could easily extend it to add other operations or cross-cutting
-features such as calculation to arbitrary degrees of precision.
+and running, you could easily extend it to add other features.
 
-## The Proto
+## The Protocol Buffer Definition
 
 Take a look in `calculator.proto` to see the full protocol buffer definition. If
 you're not familiar with protocol buffers,
@@ -96,8 +96,8 @@ Finally, we start the server:
 python server.py
 ```
 
-Now the server should be listening on port `50051`. We'll use the tool `grpcurl`
-to manually interact with it.
+Now the server should be listening on port `50051`. We'll use the tool
+[`grpcurl`](https://github.com/fullstorydev/grpcurl) to manually interact with it.
 
 ```bash
 grpcurl \
