@@ -6,7 +6,7 @@ RUN mkdir -p "${SRV_DIR}"
 
 WORKDIR "${SRV_DIR}"
 
-COPY serverpy *.proto requirements.txt "${SRV_DIR}/"
+COPY server.py *.proto requirements.txt "${SRV_DIR}/"
 
 RUN pip install -r requirements.txt && \
     python -m grpc_tools.protoc \
