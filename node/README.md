@@ -45,28 +45,30 @@ operations. Then, we'll return the result of that operation.
 
 ## The Server
 
-Let's start with the server. Take a look at [`server.py`](server.py) for the full code.
+Let's start with the server. Take a look at [`server.js`](server.js) for the full code.
 Google Cloud Run will set up an environment variable called `PORT` on which your
 server should listen. The first thing we do is pull that from the environment:
 
-```python
-_PORT = os.environ["PORT"]
+```node
+const PORT = process.env.PORT;
 ```
 
 Next, we set up a server bound to that port, listening on all interfaces.
 
-```python
-def _serve(port: Text):
-    bind_address = f"[::]:{port}"
-    server = grpc.server(futures.ThreadPoolExecutor())
-    calculator_pb2_grpc.add_CalculatorServicer_to_server(Calculator(), server)
-    server.add_insecure_port(bind_address)
-    server.start()
-    logging.info("Listening on %s.", bind_address)
-    server.wait_for_termination()
+```node
+function main() {
+  const server = new grpc.Server();
+  server.addService(calculatorProto.Calculator.service, {calculate});
+  server.bindAsync(`0.0.0.0:${PORT}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
+    if (error) {
+      throw error;
+    }
+    server.start();
+  });
+}
 ```
 
-Notice that we use the `add_insecure_port` method here. Google Cloud Run's proxy
+Notice that we use the `createInsecure` method here. Google Cloud Run's proxy
 provides us with a TLS-encrypted proxy that handles the messy business of
 setting up certs for us. The traffic from the proxy to the container with our
 gRPC server in it goes through an encrypted tunnel, so we don't need to worry
@@ -77,29 +79,14 @@ about handling it ourselves.
 Now let's test the server out locally. First, we install dependencies.
 
 ```bash
-virtualenv venv -p python3
-source venv/bin/activate
-pip install -r requirements.txt
+npm install
 ```
 
-Now we generate Python code from our `calculator.proto` file. This is how
-we get the definitions for our `calculator_pb2` and `calculator_pb2_grpc`
-modules. It's considered poor form to check these into source code, so they're
-included in our `.gitignore` file.
-
-```bash
-python -m grpc_tools.protoc \
-    -I. \
-    --python_out=. \
-    --grpc_python_out=. \
-    calculator.proto
-```
-
-Finally, we start the server:
+And then we start the server:
 
 ```bash
 export PORT=50051
-python server.py
+node server.js
 ```
 
 Now the server should be listening on port `50051`. We'll use the tool
@@ -132,10 +119,10 @@ Docker container.
 
 ## Containerizing the Server
 
-We're going to use the official Dockerhub Python 3.8 image as our base image.
+We're going to use the official Dockerhub Node 12.14 image as our base image.
 
 ```Dockerfile
-FROM python:3.8
+FROM node:12.14
 ```
 
 We'll put all of our code in `/srv/grpc/`.
@@ -143,25 +130,19 @@ We'll put all of our code in `/srv/grpc/`.
 ```Dockerfile
 WORKDIR /srv/grpc
 
-COPY server.py *.proto requirements.txt .
+COPY server.js *.proto package.json .
 ```
 
-We install our Python package dependencies into the container.
-
+We install our Node dependencies into the container.
 
 ```Dockerfile
-RUN pip install -r requirements.txt && \
-    python -m grpc_tools.protoc \
-        -I. \
-        --python_out=. \
-        --grpc_python_out=. \
-        calculator.proto
+RUN npm install
 ```
 
 Finally, we set our container up to run the server by default.
 
 ```Dockerfile
-CMD ["python", "server.py"]
+CMD ["node", "server.js"]
 ```
 
 Now we can build our image. In order to deploy to Cloud Run, we'll be pushing to
