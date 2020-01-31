@@ -20,6 +20,11 @@ you're not familiar with protocol buffers,
 [take a moment to get acquainted.](https://developers.google.com/protocol-buffers)
 
 ```protobuf
+enum Operation {
+  ADD = 0;
+  SUBTRACT = 1;
+}
+
 message BinaryOperation {
   float first_operand = 1;
   float second_operand = 2;
@@ -93,6 +98,7 @@ python -m grpc_tools.protoc \
 Finally, we start the server:
 
 ```bash
+export PORT=50051
 python server.py
 ```
 
@@ -134,13 +140,9 @@ FROM python:3.8
 We'll put all of our code in `/srv/grpc/`.
 
 ```Dockerfile
-ENV SRV_DIR "/srv/grpc"
+WORKDIR /srv/grpc
 
-RUN mkdir -p "${SRV_DIR}"
-
-WORKDIR "${SRV_DIR}"
-
-COPY server.py *.proto requirements.txt "${SRV_DIR}/"
+COPY server.py *.proto requirements.txt .
 ```
 
 We install our Python package dependencies into the container.
@@ -165,7 +167,8 @@ Now we can build our image. In order to deploy to Cloud Run, we'll be pushing to
 the `gcr.io` container registry, so we'll tag it accordingly.
 
 ```bash
-docker build -t gcr.io/GCP_PROJECT/grpc-calculator:latest
+export GCP_PROJECT=<Your GCP Project Name>
+docker build -t gcr.io/$GCP_PROJECT/grpc-calculator:latest
 ```
 
 The tag above will change based on your GCP project name. We're calling the
@@ -175,7 +178,7 @@ Now, before we deploy to Cloud Run, let's make sure that we've containerized our
 application properly. We'll test it by spinning up a local container.
 
 ```bash
-docker run -d -p 50051:50051 gcr.io/GCP_PROJECT/grpc-calculator:latest
+docker run -d -p 50051:50051 -e PORT=50051 gcr.io/$GCP_PROJECT/grpc-calculator:latest
 ```
 
 If all goes well, `grpcurl` will give us the same result as before:
@@ -184,8 +187,8 @@ If all goes well, `grpcurl` will give us the same result as before:
 grpcurl \
     --plaintext \
     -proto calculator.proto \
-    localhost:50051 \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
+    localhost:50051 \
     Calculator.Calculate
 ```
 
@@ -205,13 +208,13 @@ gcloud auth configure-docker
 Now we can push our image.
 
 ```bash
-docker push gcr.io/GCP_PROJECT/grpc-calculator:latest
+docker push gcr.io/$GCP_PROJECT/grpc-calculator:latest
 ```
 
 Finally, we deploy our application to Cloud Run:
 
 ```bash
-gcloud run deploy --image gcr.io/GCP_PROJECT/grpc-calculator:latest --platform managed
+gcloud run deploy --image gcr.io/$GCP_PROJECT/grpc-calculator:latest --platform managed
 ```
 
 This command will give you a message like
@@ -221,7 +224,7 @@ Service [grpc-calculator] revision [grpc-calculator-00001-baw] has been deployed
 
 We can now access the gRPC service at
 `grpc-calculator-xyspwhk3xq-uc.a.run.app:443`. Go ahead and leave the `https://`
-prefix off. Notice that this endpoint is secured with TLS even though the serve
+prefix off. Notice that this endpoint is secured with TLS even though the server
 we wrote is using a plaintext connection. Cloud Run provides a proxy that
 provides TLS for us. We'll account for that in our `grpcurl` invocation by
 leaving off the `--plaintext` flag.
@@ -229,8 +232,8 @@ leaving off the `--plaintext` flag.
 ```bash
 grpcurl \
     -proto calculator.proto \
-    grpc-calculator-xyspwhk3xq-uc.a.run.app:443 \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
+    grpc-calculator-xyspwhk3xq-uc.a.run.app:443 \
     Calculator.Calculate
 ```
 
