@@ -140,11 +140,7 @@ FROM python:3.8
 We'll put all of our code in `/srv/grpc/`.
 
 ```Dockerfile
-ENV SRV_DIR "/srv/grpc"
-
-RUN mkdir -p "${SRV_DIR}"
-
-WORKDIR "${SRV_DIR}"
+WORKDIR /srv/grpc
 
 COPY server.py *.proto requirements.txt .
 ```
