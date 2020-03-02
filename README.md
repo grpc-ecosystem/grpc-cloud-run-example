@@ -5,9 +5,7 @@
 Google Cloud Run makes it easy to deploy and run REST servers, but it also
 supports gRPC servers out of the box. This article will show you how to
 deploy a gRPC service written in Python to Cloud Run. For the full code, [check
-out the Github repo.](https://github.com/gnossen/grpc-cloud-run-example)
-
-**TODO(rbellevi): Update link once repo is rehomed**
+out the Github repo.](https://github.com/grpc-ecosystem/grpc-cloud-run-example)
 
 We'll be writing a simple remote calculator service. For the moment, it will
 just support adding and subtracting floating point numbers, but once this is up
