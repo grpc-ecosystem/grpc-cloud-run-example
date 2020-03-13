@@ -70,7 +70,8 @@ Notice that we use the `createInsecure` method here. Google Cloud Run's proxy
 provides us with a TLS-encrypted proxy that handles the messy business of
 setting up certs for us. The traffic from the proxy to the container with our
 gRPC server in it goes through an encrypted tunnel, so we don't need to worry
-about handling it ourselves.
+about handling it ourselves. Cloud Run natively handles HTTP/2, so gRPC's
+transport is well-supported.
 
 ## Connecting
 
@@ -197,7 +198,7 @@ Finally, we deploy our application to Cloud Run:
 gcloud run deploy --image gcr.io/$GCP_PROJECT/grpc-calculator:latest --platform managed
 ```
 
-You may be prompted them for auth. If so, choose the unauthenticated option.
+You may be prompted for auth. If so, choose the unauthenticated option.
 
 This command will give you a message like
 ```

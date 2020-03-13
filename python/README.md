@@ -218,7 +218,7 @@ Finally, we deploy our application to Cloud Run:
 gcloud run deploy --image gcr.io/$GCP_PROJECT/grpc-calculator:latest --platform managed
 ```
 
-You may be prompted them for auth. If so, choose the unauthenticated option.
+You may be prompted for auth. If so, choose the unauthenticated option.
 
 This command will give you a message like
 ```
