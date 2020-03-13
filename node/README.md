@@ -93,11 +93,11 @@ On Linux and Mac you can install it with `curl -s https://grpc.io/get_grpcurl | 
 
 ```bash
 grpcurl \
-    --plaintext \             # Use an unencrypted connection.
-    -proto calculator.proto \ # Point it at the protobuf definition.
-    localhost:50051 \         # The address of the local server.
+    --plaintext \
+    -proto calculator.proto \
+    localhost:50051 \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
-    Calculator.Calculate      # The method on the server.
+    Calculator.Calculate
 ```
 
 We tell `grpcurl` where to find the protocol buffer definitions and server.
@@ -196,6 +196,8 @@ Finally, we deploy our application to Cloud Run:
 ```bash
 gcloud run deploy --image gcr.io/$GCP_PROJECT/grpc-calculator:latest --platform managed
 ```
+
+You may be prompted them for auth. If so, choose the unauthenticated option.
 
 This command will give you a message like
 ```
