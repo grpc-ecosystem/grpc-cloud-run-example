@@ -22,5 +22,5 @@ set -x
 (cd "${LANGUAGE}"
   docker build -t "${CONTAINER_TAG}" .
   docker push "${CONTAINER_TAG}"
-  gcloud run deploy --image "${CONTAINER_TAG}" --platform managed
+  gcloud run deploy --image "${CONTAINER_TAG}" --platform managed --project=${GCP_PROJECT}
 )
