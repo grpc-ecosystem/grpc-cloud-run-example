@@ -94,10 +94,10 @@ On Linux and Mac you can install it with `curl -s https://grpc.io/get_grpcurl | 
 
 ```bash
 grpcurl \
+    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     --plaintext \
     -proto calculator.proto \
     localhost:50051 \
-    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     Calculator.Calculate
 ```
 
@@ -166,9 +166,9 @@ If all goes well, `grpcurl` will give us the same result as before:
 
 ```bash
 grpcurl \
+    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     --plaintext \
     -proto calculator.proto \
-    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     localhost:50051 \
     Calculator.Calculate
 ```
@@ -214,8 +214,8 @@ leaving off the `--plaintext` flag.
 
 ```bash
 grpcurl \
-    -proto calculator.proto \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
+    -proto calculator.proto \
     grpc-calculator-xyspwhk3xq-uc.a.run.app:443 \
     Calculator.Calculate
 ```
