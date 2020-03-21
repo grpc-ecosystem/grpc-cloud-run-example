@@ -274,11 +274,7 @@ This command will give you a message like
 Service [grpc-calculator] revision [grpc-calculator-00001-baw] has been deployed and is serving 100 percent of traffic at https://grpc-calculator-xyspwhk3xq-uc.a.run.app
 ```
 
-We can now access the gRPC service at
-`grpc-calculator-xyspwhk3xq-uc.a.run.app:443`. Notice that this endpoint is 
-secured with TLS even though the server we wrote is using a plaintext connection.
-Cloud Run provides a proxy that provides TLS for us. We'll account for that in 
-our `grpcurl` invocation by omitting the `--plaintext` flag.
+We can programmatically determine the gRPC service's endpoint:
 
 ```bash
 ENDPOINT=$(\
@@ -289,7 +285,14 @@ ENDPOINT=$(\
   --format="value(status.address.url)" \
   --filter="metadata.name=grpc-calculator") 
 ENDPOINT=${ENDPOINT#https://} && echo ${ENDPOINT}
+```
 
+Notice that this endpoint is secured with TLS even though the server we wrote 
+uses a plaintext connection. Cloud Run provides a proxy that provides TLS for us.
+
+We'll account for that in our `grpcurl` invocation by omitting the `-plaintext` flag:
+
+```bash
 grpcurl \
     -proto protos/calculator.proto \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
@@ -297,4 +300,11 @@ grpcurl \
     Calculator.Calculate
 ```
 
-And now you've got an auto-scaling calculator gRPC service!
+There's a simple Golang client too:
+
+```bash
+go run github.com/grpc-ecosystem/grpc-cloud-run-example/golang/client \
+--gprc_endpoint=${ENDPOINT}:443
+```
+
+You have an auto-scaling gRPC-based calculator service!
