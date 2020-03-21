@@ -151,8 +151,8 @@ We'll put all of our code in `/srv/grpc/`.
 WORKDIR /srv/grpc
 
 COPY go.mod .
-COPY main.go .
-COPY server.go .
+COPY protos/calculator.proto ./protos/
+COPY server/*.go ./server/
 ```
 
 We install protoc and protoc-gen-go and generate the Golang sources.
