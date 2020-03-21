@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
@@ -23,10 +22,6 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterCalculatorServer(grpcServer, NewServer())
-
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
 
 	listen, err := net.Listen("tcp", grpcEndpoint)
 	if err != nil {
