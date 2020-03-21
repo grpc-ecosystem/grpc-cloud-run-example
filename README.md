@@ -15,3 +15,4 @@ To get started, choose the language you'll be building your server in.
 
  - [Node](node/README.md)
  - [Python](python/README.md)
+ - [Golang](golang/README.md)
