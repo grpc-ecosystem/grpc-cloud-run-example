@@ -1,0 +1,6 @@
+# Exclude protoc-generated Rust sources
+src/protos/calculator_grpc.rs
+src/protos/calculator.rs
+
+# Exclude ./target
+target
