@@ -1,6 +1,5 @@
 mod protos;
 
-use std::num::ParseIntError;
 use std::{env, thread};
 
 use protos::calculator::{BinaryOperation, CalculationResult, Operation};
@@ -29,16 +28,18 @@ impl Calculator for CalculatorImpl {
     }
 }
 
-fn main() -> Result<(), ParseIntError> {
+fn main() {
+    let err = "Unable to parse `PORT` environment variable value, expecting a value that parses to a 16-bit integer (0..65535)";
     let key = "PORT";
     let port = match env::var_os(key) {
         Some(val) => match val.to_str() {
             Some(s) => match s.parse::<u16>() {
                 Ok(p) => p,
-                Err(e) => return Err(e),
+                Err(_) => panic!(err),
             },
-            None => 50051,
+            None => panic!(err),
         },
+        // `PORT` environment variable unset; defaulting to...
         None => 50051,
     };
 
