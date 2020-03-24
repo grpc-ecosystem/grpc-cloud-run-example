@@ -5,7 +5,7 @@ if [ "$#" != "2" ]; then
   exit 1
 fi
 
-LANGUAGES="node python"
+LANGUAGES="node python golang"
 
 if ! grep -oh "$2" 2>&1 1>/dev/null <<< "${LANGUAGES}"; then
   echo "Unsupported language \"$2\"" 1>&2
@@ -20,7 +20,7 @@ CONTAINER_TAG="gcr.io/${GCP_PROJECT}/grpc-calculator:latest"
 
 set -x
 (cd "${LANGUAGE}"
-  docker build -t "${CONTAINER_TAG}" .
+  docker build --tag="${CONTAINER_TAG}" .
   docker push "${CONTAINER_TAG}"
-  gcloud run deploy --image "${CONTAINER_TAG}" --platform managed --project=${GCP_PROJECT}
+  gcloud run deploy --image="${CONTAINER_TAG}" --platform=managed --project=${GCP_PROJECT}
 )

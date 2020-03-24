@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// Ensures that generated sources are in a Golang package called 'protos'
+option go_package = "protos";
+
+enum Operation {
+  ADD = 0;
+  SUBTRACT = 1;
+}
+
+message BinaryOperation {
+  float first_operand = 1;
+  float second_operand = 2;
+  Operation operation = 3;
+};
+
+message CalculationResult {
+  float result = 1;
+};
+
+service Calculator {
+  rpc Calculate (BinaryOperation) returns (CalculationResult);
+};
