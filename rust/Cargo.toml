@@ -11,9 +11,7 @@ path = "src/main.rs"
 protoc-rust-grpc = "0.6.1"
 
 [dependencies]
-blake2 = "0.8.1"
 futures = "0.3.4"
 futures-cpupool = "0.1.8"
 grpc = "0.6.2"
-hex = "0.4.2"
 protobuf = "2.8.2"
