@@ -94,10 +94,10 @@ On Linux and Mac you can install it with `curl -s https://grpc.io/get_grpcurl | 
 
 ```bash
 grpcurl \
+    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     --plaintext \
     -proto calculator.proto \
     localhost:50051 \
-    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     Calculator.Calculate
 ```
 
@@ -166,9 +166,9 @@ If all goes well, `grpcurl` will give us the same result as before:
 
 ```bash
 grpcurl \
+    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     --plaintext \
     -proto calculator.proto \
-    -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     localhost:50051 \
     Calculator.Calculate
 ```
@@ -205,18 +205,28 @@ This command will give you a message like
 Service [grpc-calculator] revision [grpc-calculator-00001-baw] has been deployed and is serving 100 percent of traffic at https://grpc-calculator-xyspwhk3xq-uc.a.run.app
 ```
 
-We can now access the gRPC service at
-`grpc-calculator-xyspwhk3xq-uc.a.run.app:443`. Go ahead and leave the `https://`
-prefix off. Notice that this endpoint is secured with TLS even though the server
-we wrote is using a plaintext connection. Cloud Run provides a proxy that
-provides TLS for us. We'll account for that in our `grpcurl` invocation by
-leaving off the `--plaintext` flag.
+We can programmatically determine the gRPC service's endpoint:
+
+```bash
+ENDPOINT=$(\
+  gcloud run services list \
+  --project=${GCP_PROJECT} \
+  --region=${GCP_REGION} \
+  --platform=managed \
+  --format="value(status.address.url)" \
+  --filter="metadata.name=grpc-calculator") 
+ENDPOINT=${ENDPOINT#https://} && echo ${ENDPOINT}
+```
+
+Notice that this endpoint is secured with TLS even though the server we wrote uses a plaintext connection. Cloud Run provides a proxy that provides TLS for us.
+
+We'll account for this in our `grpcurl` invocation by omitting the `-plaintext` flag:
 
 ```bash
 grpcurl \
-    -proto calculator.proto \
+    -proto protos/calculator.proto \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
-    grpc-calculator-xyspwhk3xq-uc.a.run.app:443 \
+    ${ENDPOINT}:443 \
     Calculator.Calculate
 ```
 
