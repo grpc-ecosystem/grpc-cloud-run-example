@@ -1,0 +1,17 @@
+[package]
+name = "grpc-cloud-run-example-rust"
+version = "0.0.1"
+edition = "2018"
+
+[[bin]]
+name = "server"
+path = "src/main.rs"
+
+[build-dependencies]
+protoc-rust-grpc = "0.6.1"
+
+[dependencies]
+futures = "0.3.4"
+futures-cpupool = "0.1.8"
+grpc = "0.6.2"
+protobuf = "2.8.2"

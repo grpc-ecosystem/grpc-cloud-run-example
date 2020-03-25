@@ -5,7 +5,7 @@ if [ "$#" != "2" ]; then
   exit 1
 fi
 
-LANGUAGES="node python golang"
+LANGUAGES="node python golang rust"
 
 if ! grep -oh "$2" 2>&1 1>/dev/null <<< "${LANGUAGES}"; then
   echo "Unsupported language \"$2\"" 1>&2
