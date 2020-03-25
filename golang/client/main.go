@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"crypto/x509"
 	"flag"
 	"log"
 	"math/rand"
@@ -25,12 +24,8 @@ func main() {
 		log.Fatal("[main] unable to start client without gRPC endpoint to server")
 	}
 
-	systemCertPool, err := x509.SystemCertPool()
-	if err != nil {
-		log.Fatal("failed to load system root CA cert pool")
-	}
 	creds := credentials.NewTLS(&tls.Config{
-		RootCAs: systemCertPool,
+		InsecureSkipVerify: true,
 	})
 
 	opts := []grpc.DialOption{
