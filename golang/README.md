@@ -13,7 +13,7 @@ and running, you could easily extend it to add other features.
 
 ## The Protocol Buffer Definition
 
-Take a look in [`calculator.proto`](calculator.proto) to see the full protocol buffer definition. If
+Take a look in [`calculator.proto`](https://github.com/grpc-ecosystem/grpc-cloud-run-example/blob/master/golang/protos/calculator.proto) to see the full protocol buffer definition. If
 you're not familiar with protocol buffers,
 [take a moment to get acquainted.](https://developers.google.com/protocol-buffers)
 
@@ -43,7 +43,7 @@ operations. Then, we'll return the result of that operation.
 
 ## The Server
 
-Let's start with the server. Take a look at [`main.go`](main.go) and [`server.go`](server.go).
+Let's start with the server. Take a look at [`main.go`](https://github.com/grpc-ecosystem/grpc-cloud-run-example/blob/master/golang/server/main.go) and [`server.go`](https://github.com/grpc-ecosystem/grpc-cloud-run-example/blob/master/golang/server/server.go).
 Google Cloud Run will set up an environment variable called `PORT` on which your
 server should listen. The first thing we do is pull that from the environment:
 
