@@ -3,3 +3,4 @@ protoc-3.11.4-linux-x86_64/
 
 # Exclude Protobuf-generated Golang sources
 *.pb.go
+.vscode/

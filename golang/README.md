@@ -43,7 +43,7 @@ operations. Then, we'll return the result of that operation.
 
 ## The Server
 
-Let's start with the server. Take a look at [`main.go`](main.go) and [`server.go`](server.go).
+Let's start with the server. Take a look at [`main.go`]([main.go](https://github.com/bootstrapsp/grpc-cloud-run-example/blob/master/golang/server/main.go)) and [`server.go`]([server.go](https://github.com/bootstrapsp/grpc-cloud-run-example/blob/master/golang/server/server.go)).
 Google Cloud Run will set up an environment variable called `PORT` on which your
 server should listen. The first thing we do is pull that from the environment:
 
