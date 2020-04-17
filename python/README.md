@@ -77,7 +77,7 @@ transport is well-supported.
 Now let's test the server out locally. First, we install dependencies.
 
 ```bash
-virtualenv venv -p python3
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -169,7 +169,7 @@ the `gcr.io` container registry, so we'll tag it accordingly.
 
 ```bash
 export GCP_PROJECT=<Your GCP Project Name>
-docker build -t gcr.io/$GCP_PROJECT/grpc-calculator:latest
+docker build -t gcr.io/$GCP_PROJECT/grpc-calculator:latest .
 ```
 
 The tag above will change based on your GCP project name. We're calling the
@@ -251,3 +251,20 @@ grpcurl \
 ```
 
 And now you've got an auto-scaling calculator gRPC service!
+
+To send a request with authentication enabled for Cloud Run, type this command
+from an environment where you have a service account enabled
+
+```bash
+TOKEN=`gcloud auth print-identity-token --audiences https://${ENDPOINT}`
+```
+
+Then add the token to the request with the command
+
+```bash
+grpcurl  -H "Authorization: Bearer $TOKEN" \
+  -proto calculator.proto \
+  -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
+  ${ENDPOINT}:443 \
+  Calculator.Calculate
+```
