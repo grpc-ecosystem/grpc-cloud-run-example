@@ -224,10 +224,12 @@ We'll account for this in our `grpcurl` invocation by omitting the `-plaintext` 
 
 ```bash
 grpcurl \
-    -proto protos/calculator.proto \
+    -proto calculator.proto \
     -d '{"first_operand": 2.0, "second_operand": 3.0, "operation": "ADD"}' \
     ${ENDPOINT}:443 \
     Calculator.Calculate
 ```
+
+Ensure that you run the above command in a directory relative to the file specified under the `-proto` flag.
 
 And now you've got an auto-scaling calculator gRPC service!
