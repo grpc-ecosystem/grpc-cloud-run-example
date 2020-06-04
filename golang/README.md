@@ -13,7 +13,7 @@ and running, you could easily extend it to add other features.
 
 ## The Protocol Buffer Definition
 
-Take a look in [`calculator.proto`](calculator.proto) to see the full protocol buffer definition. If
+Take a look in [`calculator.proto`](protos/calculator.proto) to see the full protocol buffer definition. If
 you're not familiar with protocol buffers,
 [take a moment to get acquainted.](https://developers.google.com/protocol-buffers)
 
