@@ -43,7 +43,7 @@ operations. Then, we'll return the result of that operation.
 
 ## The Server
 
-Let's start with the server. Take a look at [`main.go`](main.go) and [`server.go`](server.go).
+Let's start with the server. Take a look at [`main.go`](server/main.go) and [`server.go`](server/server.go).
 Google Cloud Run will set up an environment variable called `PORT` on which your
 server should listen. The first thing we do is pull that from the environment:
 
