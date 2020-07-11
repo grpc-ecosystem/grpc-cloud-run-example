@@ -1,4 +1,4 @@
-FROM golang@sha256:205d5cf61216a16da4431dd5796793c650236159fa04e055459940ddc4c6389c as build
+FROM golang:1.14 as build
 
 WORKDIR /srv/grpc
 

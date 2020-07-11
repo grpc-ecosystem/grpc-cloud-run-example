@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	pb "github.com/grpc-ecosystem/grpc-cloud-run-example/golang/protos"
+	pb "github.com/grpc-ecosystem/grpc-cloud-run-example/golang/protos/calculator"
 
 	"google.golang.org/grpc"
 )

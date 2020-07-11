@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 // Ensures that generated sources are in a Golang package called 'protos'
-option go_package = "protos";
+option go_package = "protos/calculator";
 
 enum Operation {
   ADD = 0;
