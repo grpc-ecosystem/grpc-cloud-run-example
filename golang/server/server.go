@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/grpc-ecosystem/grpc-cloud-run-example/golang/protos"
+	pb "github.com/grpc-ecosystem/grpc-cloud-run-example/golang/protos/calculator"
 )
 
 // Prove that Server implements pb.CalculatorServer by instantiating a Server
