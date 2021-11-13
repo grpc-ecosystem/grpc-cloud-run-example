@@ -149,7 +149,7 @@ the `gcr.io` container registry, so we'll tag it accordingly.
 
 ```bash
 export GCP_PROJECT=<Your GCP Project Name>
-docker build -t gcr.io/$GCP_PROJECT/grpc-calculator:latest
+docker build -t gcr.io/$GCP_PROJECT/grpc-calculator:latest .
 ```
 
 The tag above will change based on your GCP project name. We're calling the
